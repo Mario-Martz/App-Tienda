@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "519808612963",
+    "project_id": "apppeliculas-f28dd",
+    "storage_bucket": "apppeliculas-f28dd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:519808612963:android:3e2ee4732b701f2ac35656",
+        "android_client_info": {
+          "package_name": "com.example.app_tienda"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCR_evxso-wHNAOvuOOOIma-aYghUdO3BI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:519808612963:android:53e985a9ac429e00c35656",
+        "android_client_info": {
+          "package_name": "com.example.apppeliculas"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCR_evxso-wHNAOvuOOOIma-aYghUdO3BI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
