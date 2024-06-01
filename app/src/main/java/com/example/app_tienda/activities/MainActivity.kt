@@ -4,10 +4,15 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import com.example.app_tienda.R
+import com.example.app_tienda.models.ResponseHttp
+import com.example.app_tienda.models.User
+import com.example.app_tienda.providers.UsersProvider
+import com.example.app_tienda.utils.SharedPref
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -16,6 +21,10 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import com.google.gson.Gson
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
 
@@ -27,6 +36,8 @@ class MainActivity : AppCompatActivity() {
 
     var inputLayoutEmail: TextInputLayout? = null
     var inputLayoutPass: TextInputLayout? = null
+
+    var usersProvider = UsersProvider()
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,14 +71,42 @@ class MainActivity : AppCompatActivity() {
             val email = editextEmail?.text.toString()
             val pass = editextPass?.text.toString()
             if (isValid(email, pass)) {
-                // Continuar con el inicio de sesión
-                // Por ejemplo, enviar las credenciales al servidor o abrir una nueva actividad
+                login(email, pass)
             } else {
-                // Mostrar un mensaje de error
                 Toast.makeText(this, "Correo electrónico o contraseña no válidos", Toast.LENGTH_SHORT).show()
             }
         }
+    }
 
+    private fun login(email: String, pass: String) {
+        usersProvider.login(email, pass)?.enqueue(object : Callback<ResponseHttp> {
+            override fun onResponse(call: Call<ResponseHttp>, response: Response<ResponseHttp>) {
+                Log.d("MainActivity","Response: ${response.body()}")
+                if (response.isSuccessful && response.body()?.success == true) {
+                    // Inicio de sesión exitoso
+                    //val intent = Intent(this@MainActivity, HomeActivity::class.java)
+                    //startActivity(intent)
+                    //finish()
+                    Toast.makeText(this@MainActivity,response.body()?.message,Toast.LENGTH_LONG).show()
+                    SaveUserInsesion(response.body()?.data.toString())
+                } else {
+                    // Error en el inicio de sesión
+                    Toast.makeText(this@MainActivity, "Correo electrónico o contraseña incorrectos", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseHttp>, t: Throwable) {
+                // Error de red u otro error
+                Toast.makeText(this@MainActivity, "Error de conexión, por favor intenta de nuevo, Error: ${t.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun SaveUserInsesion(data:String){
+        val sharedPref = SharedPref(this)
+        val gson = Gson()
+        val user = gson.fromJson(data,User::class.java)
+        sharedPref.save(key = "user",user)
     }
 
     private fun signInWithGoogle() {

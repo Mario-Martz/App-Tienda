@@ -7,7 +7,8 @@ class User(
     @SerializedName("id") val id:String? = null,
     @SerializedName("name") val name:String,
     @SerializedName("email") val email:String,
-   // @SerializedName("image") val image:String? = null,
+    @SerializedName("phone") val phone:String? = null,
+    @SerializedName("image") val image:String? = null,
     @SerializedName("password") val password:String,
     //@SerializedName("repir_password") val repir_password:String
 ){

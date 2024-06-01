@@ -78,7 +78,7 @@ class Register : AppCompatActivity() {
             val pass = editPass?.text.toString()
             val repPass = editRepiPass?.text.toString()
             if (isValido(name, email, pass, repPass)) {
-                val user = User(null, name, email, pass)
+                val user = User(null, name, email, null,null,pass)
                 registerUser(user)
             } else {
                 Toast.makeText(this, "Por favor, corrija los errores", Toast.LENGTH_SHORT).show()
